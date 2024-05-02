@@ -1,0 +1,42 @@
+------------ Options -------------
+S: Gender
+Y: Mortality
+batch_size: 128
+beta1: 0.9
+command: with_fairness
+desirable_value: No
+device: cpu
+df_name: vital
+display: False
+display_id: 0
+display_port: 8097
+display_server: http://localhost
+fake_name: Synthetic_with_fairness
+gpu_ids: [0]
+hidden_dim: 24
+isTrain: True
+iteration: 1000
+lamda_val: 0.5
+load_weights: False
+lr: 0.001
+manualseed: -1
+metric_iteration: 10
+model: TimeGAN
+module: gru
+name: TimeGAN/vital
+ngpu: 1
+num_epochs: 50
+num_layer: 3
+outf: ./output
+print_freq: 1000
+resume: 
+seq_len: 24
+size_of_fake_data: 50000
+underprivileged_value: Male
+w_e0: 10
+w_es: 0.1
+w_g: 100
+w_gamma: 1
+workers: 8
+z_dim: 8
+-------------- End ----------------
