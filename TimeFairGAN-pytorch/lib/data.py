@@ -104,11 +104,12 @@ def get_ohe_data_fair(df, S_under, Y_desire, S, Y):
   return df, ohe, scaler, final_array, S_start_index, Y_start_index, underpriv_index, priv_index, undesire_index, desire_index
 
 def real_data_loading (args):
-  assert args.df_name in ['stock','maintenance', 'vehicle']
+  assert args.df_name in ['stock','Robot', 'vehicle']
   if args.df_name  == 'stock':
     df = pd.read_csv('data/stock.csv')
-  elif args.df_name  == 'maintenance':
-    df = pd.read_csv('data/maintenance.csv')
+  elif args.df_name  == 'Robot':
+    df = pd.read_csv('data/Robot.csv')
+    df['Robot_ID'] = df['Robot_ID'].map({'Robot_1': 1, 'Robot_2': 2, 'Robot_3': 3})
   elif args.df_name  == 'vehicle':
     df = pd.read_csv('data/vehicle.csv')
   if args.df_name  == 'vehicle':
@@ -117,11 +118,11 @@ def real_data_loading (args):
     for id in unique_ids:
       df_temp = df[df['Vehicle_ID'] == id]
       df_list.append(df_temp)
-  if args.df_name  == 'maintenance':
+  if args.df_name  == 'Robot':
     df_list = []
-    unique_ids = set(df['Machine_ID'].values)
+    unique_ids = set(df['Robot_ID'].values)
     for id in unique_ids:
-      df_temp = df[df['Machine_ID'] == id]
+      df_temp = df[df['Robot_ID'] == id]
       df_list.append(df_temp)
   ohes = []
   scalers = []

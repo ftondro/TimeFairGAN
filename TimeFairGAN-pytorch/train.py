@@ -33,7 +33,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 from options import Options
 from lib.data import real_data_loading, sine_data_generation, get_original_data
-from lib.timegan import TimeGAN_Fair, TimeGAN
+from lib.timegan import TimeGAN_Fair#, TimeGAN
 import pandas as pd
 
 
@@ -46,7 +46,7 @@ def train():
   opt = opt_obj.parse()
 
   # LOAD DATA
-  if opt.df_name in ['stock', 'maintenance', 'vehicle']:           
+  if opt.df_name in ['stock', 'Robot', 'vehicle']:           
     if opt.command == 'no_fairness':
       df_list, ohes, scalers, datas = real_data_loading(opt)
     elif opt.command == 'with_fairness':
@@ -71,12 +71,12 @@ def train():
     fake_data = get_original_data(synthetic_data, df_list[i], ohes[i], scalers[i])
     generated_datas.append(fake_data)
   combined_df = pd.concat(generated_datas, axis=0)
-  machine_ids = combined_df['Machine_ID'].unique()
+  machine_ids = combined_df['Robot_ID'].unique()
   df_reordered = pd.DataFrame()
   machine_df = []
   for machine_id in machine_ids:
-    machine_df.append(combined_df[combined_df['Machine_ID'] == machine_id])
-  jump = 100
+    machine_df.append(combined_df[combined_df['Robot_ID'] == machine_id])
+  jump = 1
   chunks = []
   i = 0
   while i < len(machine_df[0]):
@@ -85,6 +85,8 @@ def train():
       chunks.append(df[i:i+jump])
       i += jump
   df_reordered = pd.concat(chunks, ignore_index=True)
+  df_reordered['Robot_ID'] = df_reordered['Robot_ID'].map({1: 'Robot_1', 2: 'Robot_2', 3: 'Robot_3'})
+  df_reordered = df_reordered[df_list[0].columns]
   df_reordered.to_csv('TimeFairGAN_'+opt.command+'_'+opt.fake_name+'_'+str(opt.iteration)+'.csv', index=False)
 
 if __name__ == '__main__':
